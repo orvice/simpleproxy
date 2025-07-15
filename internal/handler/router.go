@@ -29,15 +29,11 @@ func Init() error {
 		proxy.Director = func(req *http.Request) {
 			logger := log.FromContext(req.Context())
 
-			req.Host = proxyConf.Host
+			// set host header to upstream host
+			req.Host = upstreamURL.Host
 			req.URL.Host = upstreamURL.Host
 			req.URL.Scheme = upstreamURL.Scheme
 			req.URL.Path = upstreamURL.Path + req.URL.Path
-
-			// remove forward header
-			req.Header.Del("X-Forwarded-For")
-			req.Header.Del("X-Forwarded-Host")
-			req.Header.Del("X-Forwarded-Proto")
 
 			logger.Info("proxy request",
 				"new_url", req.URL.String(),
