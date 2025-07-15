@@ -34,6 +34,11 @@ func Init() error {
 			req.URL.Scheme = upstreamURL.Scheme
 			req.URL.Path = upstreamURL.Path + req.URL.Path
 
+			// remove forward header
+			req.Header.Del("X-Forwarded-For")
+			req.Header.Del("X-Forwarded-Host")
+			req.Header.Del("X-Forwarded-Proto")
+
 			logger.Info("proxy request",
 				"new_url", req.URL.String(),
 				"host", proxyConf.Host, "upstream", proxyConf.Upstream)
