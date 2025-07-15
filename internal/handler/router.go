@@ -32,6 +32,7 @@ func Init() error {
 			req.Host = proxyConf.Host
 			req.URL.Host = upstreamURL.Host
 			req.URL.Scheme = upstreamURL.Scheme
+			req.URL.Path = upstreamURL.Path + req.URL.Path
 
 			logger.Info("proxy request",
 				"new_url", req.URL.String(),
