@@ -34,7 +34,9 @@ func Init() error {
 func proxy(c *gin.Context) {
 	logger := log.FromContext(c.Request.Context())
 	host := c.Request.Host
-	logger.Info("new proxy request", "host", host)
+	logger.Info("new proxy request",
+		"path", c.Request.URL.Path,
+		"host", host)
 
 	proxy, ok := reserveProxy[host]
 	if !ok {
