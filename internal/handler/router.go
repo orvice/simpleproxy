@@ -8,6 +8,7 @@ import (
 	"butterfly.orx.me/core/log"
 	"github.com/gin-gonic/gin"
 	"github.com/orvice/simpleproxy/internal/conf"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )
 
 func Router(m *gin.Engine) {
@@ -39,6 +40,7 @@ func Init() error {
 				"new_url", req.URL.String(),
 				"host", proxyConf.Host, "upstream", proxyConf.Upstream)
 		}
+		proxy.Transport = otelhttp.NewTransport(http.DefaultTransport)
 		reserveProxy[proxyConf.Host] = proxy
 	}
 	return nil
