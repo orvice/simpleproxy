@@ -12,6 +12,9 @@ func main() {
 		Config:  conf.Conf,
 		Service: "simpleproxy",
 		Router:  handler.Router,
+		InitFunc: []func() error{
+			handler.Init,
+		},
 	})
 	app.Run()
 }
