@@ -9,7 +9,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
-RUN go build -o bin/simpleproxy main.go
+RUN make build
 
 
 FROM quay.io/orvice/go-runtime:latest
