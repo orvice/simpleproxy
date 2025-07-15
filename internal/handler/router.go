@@ -27,7 +27,7 @@ func Init() error {
 		}
 		proxy := httputil.NewSingleHostReverseProxy(upstreamURL)
 		proxy.Director = func(req *http.Request) {
-			req.URL.Host = proxyConf.Host
+			req.URL.Host = upstreamURL.Host
 			req.URL.Scheme = upstreamURL.Scheme
 		}
 		reserveProxy[proxyConf.Host] = proxy
