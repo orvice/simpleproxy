@@ -6,12 +6,24 @@ import (
 	"net/url"
 
 	"butterfly.orx.me/core/log"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/orvice/simpleproxy/internal/conf"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )
 
 func Router(m *gin.Engine) {
+	// 配置CORS，允许所有来源
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+	config.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"}
+	config.AllowHeaders = []string{"*"}
+	config.AllowCredentials = true
+	config.ExposeHeaders = []string{"Content-Length", "Content-Type", "etag", "last-modified"}
+
+	// 使用CORS中间件
+	m.Use(cors.New(config))
+
 	// 注册代理处理函数，使用通配符路由捕获所有请求
 	m.NoRoute(proxy)
 }
@@ -55,7 +67,7 @@ func proxy(c *gin.Context) {
 
 	proxy, ok := reserveProxy[host]
 	if !ok {
-		logger.Error("proxy not found", "host", host)
+		logger.Debug("proxy not found", "host", host)
 		c.JSON(http.StatusNotFound, gin.H{"error": "proxy not found"})
 		return
 	}
