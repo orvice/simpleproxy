@@ -23,9 +23,15 @@ func Router(m *gin.Engine) {
 
 	// 使用CORS中间件
 	m.Use(cors.New(config))
+	// 健康检查路由
+	m.GET("/healthz", healthz)
 
 	// 注册代理处理函数，使用通配符路由捕获所有请求
 	m.NoRoute(proxy)
+}
+
+func healthz(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"status": "ok"})
 }
 
 var (
