@@ -7,7 +7,8 @@ var (
 )
 
 type Config struct {
-	Proxy []Proxy `yaml:"proxy"`
+	EnableCORS bool
+	Proxy      []Proxy `yaml:"proxy"`
 }
 
 func (Config) Print() {

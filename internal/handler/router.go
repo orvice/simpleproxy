@@ -22,7 +22,10 @@ func Router(m *gin.Engine) {
 	config.ExposeHeaders = []string{"Content-Length", "Content-Type", "etag", "last-modified"}
 
 	// 使用CORS中间件
-	m.Use(cors.New(config))
+	if conf.Conf.EnableCORS {
+		m.Use(cors.New(config))
+	}
+
 	// 健康检查路由
 	m.GET("/healthz", healthz)
 
