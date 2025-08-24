@@ -9,10 +9,14 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/orvice/simpleproxy/internal/conf"
+	"github.com/orvice/simpleproxy/internal/middleware"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )
 
 func Router(m *gin.Engine) {
+	// 添加 logger 中间件
+	m.Use(middleware.Logger())
+
 	// 配置CORS，允许所有来源
 	config := cors.DefaultConfig()
 	config.AllowAllOrigins = true
